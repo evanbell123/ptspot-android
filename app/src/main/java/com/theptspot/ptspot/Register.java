@@ -1,8 +1,8 @@
 package com.theptspot.ptspot;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,61 +10,66 @@ import android.widget.RadioButton;
 
 public class Register extends AppCompatActivity {
 
-    private Button register;
-    private EditText firstName, lastName, email, password, confirmPassword, birthDate;
+    private Button bRegister;
+    private EditText etFirstName, etLastName, etEmail, etPassword, etConfirmPassword, etBirthDate;
+    private RadioButton rbMale, rbFemale, rbTrainer, rbSeeker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        firstName = (EditText) findViewById(R.id.first_name);
-        lastName = (EditText) findViewById(R.id.last_name);
-        email = (EditText) findViewById(R.id.register_email);
-        password = (EditText) findViewById(R.id.register_password);
-        confirmPassword = (EditText) findViewById(R.id.confirm_password);
-        birthDate = (EditText) findViewById(R.id.birth_date);
-        register = (Button) findViewById(R.id.button_register);
+        etFirstName = (EditText) findViewById(R.id.etFirstName);
+        etLastName = (EditText) findViewById(R.id.etLastName);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        etConfirmPassword = (EditText) findViewById(R.id.etConfirmPassword);
+        etBirthDate = (EditText) findViewById(R.id.etBirthDate);
+        bRegister = (Button) findViewById(R.id.bRegister);
+        rbMale = (RadioButton) findViewById(R.id.rbMale);
+        rbFemale = (RadioButton) findViewById(R.id.rbFemale);
+        rbTrainer = (RadioButton) findViewById(R.id.rbTrainer);
+        rbSeeker = (RadioButton) findViewById(R.id.rbSeeker);
 
-        register.setOnClickListener(new View.OnClickListener() {
+        bRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), MainActivity.class));
+                String firstName = etFirstName.getText().toString();
+                String lastName = etFirstName.getText().toString();
+                String email = etFirstName.getText().toString();
+                String password = etFirstName.getText().toString();
+                String confirmPassword = etFirstName.getText().toString();
+                String birthDate = etFirstName.getText().toString();
+                Boolean gender;
+                Integer role;
+                if (rbMale.isChecked()) {
+                    gender = true;
+                } else {
+                    gender = false;
+                }
+
+                if (rbTrainer.isChecked()) {
+                    role = 1;
+                } else {
+                    role = 0;
+                }
+
+                User user = new User(firstName, lastName, email, password, birthDate, gender, role);
+
+                registerUser(user);
+
+                startActivity(new Intent(v.getContext(), Login.class));
             }
         });
     }
 
-    public void onGenderButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.radio_male:
-                if (checked) {
-
-                }
-                break;
-            case R.id.radio_female:
-                if (checked) {
-
-                }
-                break;
-        }
-    }
-
-    public void onRoleButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.radio_trainer:
-                if (checked) {
-
-                }
-                break;
-            case R.id.radio_seeker:
-                if (checked) {
-
-                }
-                break;
-        }
+    private void registerUser(User user) {
+        ServerRequests serverRequests = new ServerRequests(this);
+        serverRequests.storeUserDataInBackground(user, new GetUserCallback() {
+            @Override
+            public void done(User returnedUser) {
+                startActivity(new Intent(Register.this, Login.class));
+            }
+        });
     }
 }
