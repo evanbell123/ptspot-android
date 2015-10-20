@@ -20,8 +20,8 @@ public class LoginService {
     public LoginService(String email, String password) {
         url = "http://www.theptspot.com/api/login";
         loginCredentials = new HashMap<>();
-        loginCredentials.put("email", email);
-        loginCredentials.put("password", password);
+        loginCredentials.put("loginEmail", email);
+        loginCredentials.put("loginPassword", password);
     }
 
     // Throws Exception if there is a problem getting temperature
@@ -30,7 +30,7 @@ public class LoginService {
             JSONObject userData = APIService.getJSONObject(url, loginCredentials);
             Log.i(TAG, userData.toString());
             //JSONObject mainSection = userData.getJSONObject("main");
-            String id = userData.getString("id");
+            String id = userData.getString("userId");
             return id;
 
         } catch (JSONException e) {
