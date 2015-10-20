@@ -104,5 +104,16 @@ public class User {
         this.role = -1;
     }
 
+    public User(Integer id) {
+        this.id = -1;
+        this.firstName = "";
+        this.lastName = "";
+        this.email = "";
+        this.password = "";
+        this.gender = false;
+        this.birthDate = "";
+        this.totalReviews = 0;
+        this.role = -1;
+    }
 
 }

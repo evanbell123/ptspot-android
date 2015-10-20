@@ -25,8 +25,8 @@ import java.util.ArrayList;
  */
 public class ServerRequests {
     ProgressDialog progressDialog;
-    public static final int CONNECTION_TIMEOUT = 1000 * 15;
-    public static final String SERVER_ADDRESS = "www.theptspot.com/api/";
+    public static final int CONNECTION_TIMEOUT = 1000 * 20;
+    public static final String SERVER_ADDRESS = "http://www.theptspot.com/";
 
     public ServerRequests(Context context) {
         progressDialog = new ProgressDialog(context);
@@ -61,8 +61,8 @@ public class ServerRequests {
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
             dataToSend.add(new BasicNameValuePair("firstName", user.getFirstName()));
             dataToSend.add(new BasicNameValuePair("lastName", user.getLastName()));
-            dataToSend.add(new BasicNameValuePair("email", user.getEmail()));
-            dataToSend.add(new BasicNameValuePair("password", user.getPassword()));
+            dataToSend.add(new BasicNameValuePair("registerEmail", user.getEmail()));
+            dataToSend.add(new BasicNameValuePair("registerPassword", user.getPassword()));
             dataToSend.add(new BasicNameValuePair("confirmPassword", user.getPassword()));
             dataToSend.add(new BasicNameValuePair("birthDate", user.getBirthDate()));
             dataToSend.add(new BasicNameValuePair("gender", user.getGender().toString()));
@@ -107,9 +107,11 @@ public class ServerRequests {
 
         @Override
         protected User doInBackground(Void... params) {
+
             ArrayList<NameValuePair> dataToSend = new ArrayList<>();
-            dataToSend.add(new BasicNameValuePair("email", user.getEmail()));
-            dataToSend.add(new BasicNameValuePair("password", user.getPassword()));
+            dataToSend.add(new BasicNameValuePair("loginEmail", user.getEmail()));
+            dataToSend.add(new BasicNameValuePair("loginPassword", user.getPassword()));
+
 
             HttpParams httpRequestParams = new BasicHttpParams();
             HttpConnectionParams.setConnectionTimeout(httpRequestParams, CONNECTION_TIMEOUT);
@@ -120,28 +122,28 @@ public class ServerRequests {
 
             User returnedUser = null;
             try {
+
                 post.setEntity(new UrlEncodedFormEntity(dataToSend));
                 HttpResponse httpResponse = client.execute(post);
 
                 HttpEntity entity = httpResponse.getEntity();
                 String result = EntityUtils.toString(entity);
+
                 JSONObject jObject = new JSONObject(result);
 
                 if (jObject.length() == 0) {
                     user = null;
                 } else {
-                    String firstName = jObject.getString("firstName");
-                    String lastName = jObject.getString("lastName");
-                    String email = jObject.getString("email");
-                    String birthDate = jObject.getString("birthDate");
 
-                    returnedUser = new User(firstName, lastName, email, birthDate);
+                    Integer id = jObject.getInt("userId");
+
+                    returnedUser = new User(id);
 
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
 
 
             return returnedUser;
