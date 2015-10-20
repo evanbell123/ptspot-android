@@ -1,17 +1,23 @@
 package com.theptspot.ptspot;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import junit.framework.Assert;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button bLogout;
     private EditText etFirstName, etLastName, etEmail, etBirthDate;
     UserLocalStore userLocalStore;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        if (authenticate() == true) {
-            displayUserDetails();
-        } else {
-            startActivity(new Intent(MainActivity.this, Login.class));
-        }
-    }
-
-    private Boolean authenticate() {
-        return userLocalStore.getUserLoggedIn();
     }
 
     private void displayUserDetails() {

@@ -2,8 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
-    useLibrary 'org.apache.http.legacy'
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.theptspot.ptspot"
@@ -23,6 +22,5 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
+    compile 'com.android.support:appcompat-v7:23.0.1'
 }

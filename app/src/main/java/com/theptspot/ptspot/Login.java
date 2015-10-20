@@ -2,6 +2,7 @@ package com.theptspot.ptspot;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,12 +10,48 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import junit.framework.Assert;
+
 public class Login extends AppCompatActivity {
+
+    private static final String TAG = Login.class.getName();
+    private static final String SERVER_ADDRESS = "http://www.theptspot.com/api/";
 
     private Button bLogin;
     private EditText etEmail, etPassword;
     private TextView tvRegisterLink;
     UserLocalStore userLocalStore;
+
+    private class FetchLoginTask extends AsyncTask<String, Void, String> {
+
+        // Not sure what the three dots mean? See: http://stackoverflow.com/questions/3158730/java-3-dots-in-parameters?rq=1
+        protected String doInBackground(String... parms) {
+
+            // parms[0] is first parm, etc.
+            LoginService loginService = new LoginService(parms[0], parms[1]);
+            try {
+                String id = loginService.getId();
+                return id;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "Not available";
+        }
+
+        protected void onProgressUpdate(Void... values) {
+
+        }
+
+        //  invoked on the UI thread after the background computation finishes
+        protected void onPostExecute(String id) {
+            // Example assert statements
+            //Assert.assertNull("Error: id is null", id);
+            //Assert.assertNotNull(id);
+            //Assert.assertTrue(3 < 4);
+
+            //updateUI(temperature);
+        }
+    }
 
 
     @Override
@@ -34,11 +71,9 @@ public class Login extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                User user = new User(email, password);
+                new FetchLoginTask().execute(email, password);
 
-                authenticate(user);
-
-                startActivity(new Intent(v.getContext(), MainActivity.class));
+                //startActivity(new Intent(v.getContext(), MainActivity.class));
             }
         });
 
@@ -46,20 +81,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), Register.class));
-            }
-        });
-    }
-
-    private void authenticate(User user) {
-        ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.fetchUserDataInBackground(user, new GetUserCallback() {
-            @Override
-            public void done(User returnedUser) {
-                if (returnedUser == null) {
-                    showErrorMessage();
-                } else {
-                    logUserIn(returnedUser);
-                }
             }
         });
     }

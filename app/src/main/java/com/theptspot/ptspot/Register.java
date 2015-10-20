@@ -56,19 +56,7 @@ public class Register extends AppCompatActivity {
 
                 User user = new User(firstName, lastName, email, password, birthDate, gender, role);
 
-                registerUser(user);
-
                 startActivity(new Intent(v.getContext(), Login.class));
-            }
-        });
-    }
-
-    private void registerUser(User user) {
-        ServerRequests serverRequests = new ServerRequests(this);
-        serverRequests.storeUserDataInBackground(user, new GetUserCallback() {
-            @Override
-            public void done(User returnedUser) {
-                startActivity(new Intent(Register.this, Login.class));
             }
         });
     }
