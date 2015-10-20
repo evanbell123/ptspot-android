@@ -16,7 +16,6 @@ public class LoginService {
     private HashMap<String, String> loginCredentials;
     private static final String TAG = LoginService.class.getName();
 
-    // cityName is city,state. For example: Leawood,KS or Kansas%20City,MO
     public LoginService(String email, String password) {
         url = "http://www.theptspot.com/api/login";
         loginCredentials = new HashMap<>();
@@ -24,7 +23,7 @@ public class LoginService {
         loginCredentials.put("loginPassword", password);
     }
 
-    // Throws Exception if there is a problem getting temperature
+    // Throws Exception if there is a problem getting id
     public String getId() throws Exception {
         try {
             JSONObject userData = APIService.getJSONObject(url, loginCredentials);

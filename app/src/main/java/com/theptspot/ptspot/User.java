@@ -1,9 +1,40 @@
 package com.theptspot.ptspot;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by ebbmf on 10/12/2015.
  */
 public class User {
+
+    private Integer id, totalReviews, role;
+    private String firstName, lastName, email, birthDate;
+    private Boolean gender;
+
+
+    public User(JSONObject userData) throws JSONException{
+        this.id = userData.getInt("id");
+        this.firstName = userData.getString("firstName");
+        this.lastName = userData.getString("lastName");
+        this.email = userData.getString("email");
+        this.gender = userData.getBoolean("email");
+        this.birthDate = userData.getString("birthDate");
+        this.totalReviews = userData.getInt("totalReviews");
+        this.role = userData.getInt("role");
+    }
+
+    public User(Integer id, String firstName, String lastName, String email, Boolean gender, String birthDate, Integer totalReviews, Integer role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.totalReviews = totalReviews;
+        this.role = role;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -24,13 +55,7 @@ public class User {
         return firstName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    public String getEmail() { return email; }
 
     public String getBirthDate() {
         return birthDate;
@@ -38,82 +63,6 @@ public class User {
 
     public Boolean getGender() {
         return gender;
-    }
-
-    private Integer id, totalReviews, role;
-    private String firstName, lastName, email, password, birthDate;
-    private Boolean gender;
-
-    public User(String firstName, String lastName, String email, String password, String birthDate, Boolean gender, Integer role) {
-        this.id = -1;
-        this.firstName = "";
-        this.lastName = "";
-        this.email = "";
-        this.password = "";
-        this.gender = false;
-        this.birthDate = "";
-        this.totalReviews = -1;
-        this.role = -1;
-    }
-
-    public User(Integer id, String firstName, String lastName, String email, String password, Boolean gender, String birthDate, Integer totalReviews, Integer role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.totalReviews = totalReviews;
-        this.role = role;
-    }
-
-    public User(String firstName, String lastName, String email, String birthDate, Boolean gender, Integer role) {
-        this.id = -1;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = "";
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.totalReviews = 0;
-        this.role = role;
-    }
-
-    public User(String firstName, String lastName, String email, String birthDate) {
-        this.id = -1;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = "";
-        this.gender = false;
-        this.birthDate = birthDate;
-        this.totalReviews = 0;
-        this.role = -1;
-    }
-
-    public User(String email, String password) {
-        this.id = -1;
-        this.firstName = "";
-        this.lastName = "";
-        this.email = email;
-        this.password = password;
-        this.gender = false;
-        this.birthDate = "";
-        this.totalReviews = 0;
-        this.role = -1;
-    }
-
-    public User(Integer id) {
-        this.id = -1;
-        this.firstName = "";
-        this.lastName = "";
-        this.email = "";
-        this.password = "";
-        this.gender = false;
-        this.birthDate = "";
-        this.totalReviews = 0;
-        this.role = -1;
     }
 
 }

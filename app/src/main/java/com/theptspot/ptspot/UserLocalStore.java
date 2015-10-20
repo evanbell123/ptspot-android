@@ -32,14 +32,12 @@ public class UserLocalStore {
         String firstName = userLocalDatabase.getString("firstName", null);
         String lastName = userLocalDatabase.getString("lastName", null);
         String email = userLocalDatabase.getString("email", null);
-        String passwordHash = userLocalDatabase.getString("passwordHash", null);
         Boolean gender = userLocalDatabase.getBoolean("gender", Boolean.parseBoolean(null));
         String birthDate = userLocalDatabase.getString("birthDate", null);
         Integer totalReviews = userLocalDatabase.getInt("totalReviews", Integer.parseInt(null));
         Integer role = userLocalDatabase.getInt("role", Integer.parseInt(null));
-        Boolean activated = userLocalDatabase.getBoolean("activated", Boolean.parseBoolean(null));
 
-        User storedUser = new User(id, firstName, lastName, email, passwordHash, gender, birthDate, totalReviews, role);
+        User storedUser = new User(id, firstName, lastName, email, gender, birthDate, totalReviews, role);
         return storedUser;
     }
 
