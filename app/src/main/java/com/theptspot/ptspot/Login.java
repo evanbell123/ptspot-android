@@ -10,8 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import junit.framework.Assert;
-
 public class Login extends AppCompatActivity {
 
     private static final String TAG = Login.class.getName();
@@ -30,8 +28,9 @@ public class Login extends AppCompatActivity {
             // parms[0] is first parm, etc.
             LoginService loginService = new LoginService(parms[0], parms[1]);
             try {
-                String id = loginService.getId();
-                return id;
+                User user = loginService.login();
+                return user.toString();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -44,12 +43,7 @@ public class Login extends AppCompatActivity {
 
         //  invoked on the UI thread after the background computation finishes
         protected void onPostExecute(String id) {
-            // Example assert statements
-            //Assert.assertNull("Error: id is null", id);
-            //Assert.assertNotNull(id);
-            //Assert.assertTrue(3 < 4);
 
-            //updateUI(temperature);
         }
     }
 

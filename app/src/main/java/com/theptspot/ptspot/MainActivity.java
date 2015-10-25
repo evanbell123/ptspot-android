@@ -16,9 +16,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText etFirstName, etLastName, etEmail, etBirthDate;
     UserLocalStore userLocalStore;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

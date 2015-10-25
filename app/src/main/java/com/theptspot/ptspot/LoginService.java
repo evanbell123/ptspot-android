@@ -24,17 +24,20 @@ public class LoginService {
     }
 
     // Throws Exception if there is a problem getting id
-    public String getId() throws Exception {
+    public User login() throws Exception {
         try {
             JSONObject userData = APIService.getJSONObject(url, loginCredentials);
             Log.i(TAG, userData.toString());
-            //JSONObject mainSection = userData.getJSONObject("main");
-            String id = userData.getString("userId");
-            return id;
+            User returnedUser = new UserBuilder()
+                    .id(userData.getInt("userId"))
+                    .email(this.loginCredentials.get("email"))
+                    .buildUser();
+
+            return returnedUser;
 
         } catch (JSONException e) {
             e.printStackTrace();
-            throw new Exception("Problem in LoginService.getId");
+            throw new Exception("Problem in LoginService.login");
         }
     }
 

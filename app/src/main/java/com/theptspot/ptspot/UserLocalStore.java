@@ -37,7 +37,7 @@ public class UserLocalStore {
         Integer totalReviews = userLocalDatabase.getInt("totalReviews", Integer.parseInt(null));
         Integer role = userLocalDatabase.getInt("role", Integer.parseInt(null));
 
-        User storedUser = new User(id, firstName, lastName, email, gender, birthDate, totalReviews, role);
+        User storedUser = new User(id, firstName, lastName, email, birthDate, gender, totalReviews, role);
         return storedUser;
     }
 

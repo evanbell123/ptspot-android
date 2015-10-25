@@ -8,23 +8,16 @@ import org.json.JSONObject;
  */
 public class User {
 
-    private Integer id, totalReviews, role;
-    private String firstName, lastName, email, birthDate;
-    private Boolean gender;
+    private Integer id = null;
+    private String firstName = null;
+    private String lastName = null;
+    private String email = null;
+    private String birthDate = null;
+    private Integer totalReviews = null;
+    private Boolean gender = null;
+    private Integer role = null;
 
-
-    public User(JSONObject userData) throws JSONException{
-        this.id = userData.getInt("id");
-        this.firstName = userData.getString("firstName");
-        this.lastName = userData.getString("lastName");
-        this.email = userData.getString("email");
-        this.gender = userData.getBoolean("email");
-        this.birthDate = userData.getString("birthDate");
-        this.totalReviews = userData.getInt("totalReviews");
-        this.role = userData.getInt("role");
-    }
-
-    public User(Integer id, String firstName, String lastName, String email, Boolean gender, String birthDate, Integer totalReviews, Integer role) {
+    public User(Integer id, String firstName, String lastName, String email, String birthDate, Boolean gender, Integer totalReviews, Integer role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,6 +25,17 @@ public class User {
         this.gender = gender;
         this.birthDate = birthDate;
         this.totalReviews = totalReviews;
+        this.role = role;
+    }
+
+    public User(String firstName, String lastName, String email, String birthDate, Boolean gender, Integer role) {
+        this.id = -1;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.totalReviews = -1;
         this.role = role;
     }
 

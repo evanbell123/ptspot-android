@@ -54,7 +54,7 @@ public class Register extends AppCompatActivity {
                     role = 0;
                 }
 
-                User user = new User(firstName, lastName, email, password, birthDate, gender, role);
+                //User user = new User(firstName, lastName, email, password, birthDate, gender, role);
 
                 startActivity(new Intent(v.getContext(), Login.class));
             }
