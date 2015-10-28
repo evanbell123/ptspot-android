@@ -28,21 +28,10 @@ public class LoginService {
     public void login() throws Exception {
         try {
             JSONObject userData = APIService.getJSONObject(url, loginCredentials);
-            Log.i(TAG, userData.toString());
             HttpCookie httpCookie = new HttpCookie("ptspot", userData.toString());
-            Log.i(TAG, userData.toString());
-            /*
-            User returnedUser = new UserBuilder()
-                    .id(userData.getInt("userID"))
-                    .firstName(userData.getString("firstName"))
-                    .lastName(userData.getString("lastName"))
-                    .email(userData.getString("email"))
-                    .birthDate(userData.getString("birthDate"))
-
-                    .buildUser();
-
-            return returnedUser;
-            */
+            Log.i(TAG, httpCookie.toString());
+            //Log.i(TAG, userData.toString());
+            //Log.i(TAG, httpCookie.getDomain());
 
         } catch (JSONException e) {
             e.printStackTrace();
