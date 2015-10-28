@@ -6,6 +6,7 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpCookie;
 import java.util.HashMap;
 
 /**
@@ -24,16 +25,24 @@ public class LoginService {
     }
 
     // Throws Exception if there is a problem getting id
-    public User login() throws Exception {
+    public void login() throws Exception {
         try {
             JSONObject userData = APIService.getJSONObject(url, loginCredentials);
             Log.i(TAG, userData.toString());
+            HttpCookie httpCookie = new HttpCookie("ptspot", userData.toString());
+            Log.i(TAG, userData.toString());
+            /*
             User returnedUser = new UserBuilder()
-                    .id(userData.getInt("userId"))
-                    .email(this.loginCredentials.get("email"))
+                    .id(userData.getInt("userID"))
+                    .firstName(userData.getString("firstName"))
+                    .lastName(userData.getString("lastName"))
+                    .email(userData.getString("email"))
+                    .birthDate(userData.getString("birthDate"))
+
                     .buildUser();
 
             return returnedUser;
+            */
 
         } catch (JSONException e) {
             e.printStackTrace();

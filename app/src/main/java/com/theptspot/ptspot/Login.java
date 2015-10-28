@@ -28,8 +28,8 @@ public class Login extends AppCompatActivity {
             // parms[0] is first parm, etc.
             LoginService loginService = new LoginService(parms[0], parms[1]);
             try {
-                User user = loginService.login();
-                return user.toString();
+                loginService.login();
+                //return user.toString();
 
             } catch (Exception e) {
                 e.printStackTrace();

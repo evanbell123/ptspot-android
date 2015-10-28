@@ -39,7 +39,7 @@ public class User {
         this.role = role;
     }
 
-    public Integer getId() {
+    public Integer getID() {
         return id;
     }
 
