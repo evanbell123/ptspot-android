@@ -1,14 +1,12 @@
 package com.theptspot.ptspot;
 
-import android.util.Log;
+import android.util.Base64;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -28,12 +26,8 @@ public class APIService {
 
     private static final String TAG = APIService.class.getName();
 
-    public static JSONObject getJSONObject(String requestURL, HashMap<String, String> postDataParams) throws JSONException {
-        return new JSONObject(performPostCall(requestURL, postDataParams));
-    }
 
-
-    public static String performPostCall(String requestURL, HashMap<String, String> postDataParams) {
+    public static JSONObject performPostCallWithDataParams(String requestURL, HashMap<String, String> postDataParams) throws JSONException {
         URL url;
         String response = "";
         try {
@@ -43,8 +37,11 @@ public class APIService {
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
+
             conn.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
+
+            conn.addRequestProperty("Authorization", getB64Auth("TestClient", "TestSecret"));
             conn.setUseCaches (true);
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -74,7 +71,45 @@ public class APIService {
             e.printStackTrace();
         }
 
-        return response;
+        return new JSONObject(response);
+    }
+
+    public static JSONObject performPostCall(String requestURL) throws JSONException {
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            conn.setUseCaches(true);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+
+            OutputStream os = conn.getOutputStream();
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new JSONObject(response);
     }
 
     public static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
@@ -92,6 +127,12 @@ public class APIService {
         }
 
         return result.toString();
+    }
+
+    private static String getB64Auth (String login, String pass) {
+        String source=login+":"+pass;
+        String ret="Basic "+Base64.encodeToString(source.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+        return ret;
     }
 
 }

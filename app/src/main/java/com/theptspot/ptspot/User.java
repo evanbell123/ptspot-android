@@ -17,15 +17,18 @@ public class User {
     private Boolean gender = null;
     private Integer role = null;
 
-    public User(Integer id, String firstName, String lastName, String email, String birthDate, Boolean gender, Integer totalReviews, Integer role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.totalReviews = totalReviews;
-        this.role = role;
+    public User() {}
+
+    public User(User user) {
+        id = user.getID();
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        birthDate = user.getBirthDate();
+        totalReviews = user.getTotalReviews();
+        gender = user.getGender();
+        role = user.getRole();
+
     }
 
     public User(String firstName, String lastName, String email, String birthDate, Boolean gender, Integer role) {
@@ -36,6 +39,17 @@ public class User {
         this.gender = gender;
         this.birthDate = birthDate;
         this.totalReviews = -1;
+        this.role = role;
+    }
+
+    public User(Integer id, String firstName, String lastName, String email, String birthDate, Boolean gender, Integer totalReviews, Integer role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.totalReviews = totalReviews;
         this.role = role;
     }
 

@@ -18,25 +18,28 @@ public class LoginService {
     private static final String TAG = LoginService.class.getName();
 
     public LoginService(String email, String password) {
-        url = "http://www.theptspot.com/api/login";
+        url = "http://www.theptspot.com/account/login";
         loginCredentials = new HashMap<>();
-        loginCredentials.put("loginEmail", email);
-        loginCredentials.put("loginPassword", password);
+        loginCredentials.put("grant_type","password");
+        loginCredentials.put("username", email);
+        loginCredentials.put("password", password);
     }
 
     // Throws Exception if there is a problem getting id
     public void login() throws Exception {
         try {
-            JSONObject userData = APIService.getJSONObject(url, loginCredentials);
+            JSONObject userData = APIService.performPostCallWithDataParams(url, loginCredentials);
             HttpCookie httpCookie = new HttpCookie("ptspot", userData.toString());
             Log.i(TAG, httpCookie.toString());
             //Log.i(TAG, userData.toString());
-            //Log.i(TAG, httpCookie.getDomain());
+            Log.i(TAG, httpCookie.getDomain());
 
         } catch (JSONException e) {
             e.printStackTrace();
             throw new Exception("Problem in LoginService.login");
         }
     }
+
+
 
 }
