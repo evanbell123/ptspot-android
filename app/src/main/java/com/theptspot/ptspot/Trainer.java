@@ -1,6 +1,12 @@
 package com.theptspot.ptspot;
 
+import android.content.Context;
+
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by Evan on 11/21/2015.
@@ -21,6 +27,54 @@ public class Trainer extends User {
         this.effectiveness = effectiveness;
         this.motivation = motivation;
         this.intensity = intensity;
+    }
+
+    private static Trainer sTrainer;
+    private List<Trainer> mTrainers;
+
+    public static Trainer get(Context context) {
+        if (sTrainer == null) {
+            sTrainer = new Trainer(context);
+        }
+        return sTrainer;
+    }
+
+    private Trainer(Context context) {
+        UserBuilder userBuilder = new UserBuilder();
+        mTrainers = new ArrayList<>();
+        Random random = new Random();
+        //Generate random list of trainers
+        for (Integer i = 1; i <= 26; i++) {
+            User user =
+                    userBuilder.id(i)
+                    .firstName("Evan")
+                    .lastName("Bell")
+                    .totalReviews(random.nextInt(20) + 10)
+                    .buildUser();
+
+            Trainer trainer;
+            trainer = new Trainer(user,
+                    random.nextInt(5) + random.nextDouble(),
+                    random.nextInt(100) + random.nextDouble(),
+                    random.nextInt(5),
+                    random.nextInt(5),
+                    random.nextInt(5),
+                    random.nextInt(5));
+            mTrainers.add(trainer);
+        }
+    }
+
+    public List<Trainer> getTrainers() {
+        return mTrainers;
+    }
+
+    public Trainer getTrainer(UUID id) {
+        for (Trainer trainer : mTrainers) {
+            if (trainer.getID().equals(id)) {
+                return trainer;
+            }
+        }
+        return null;
     }
 
     public static Comparator<Trainer> ptScoreCompare = new Comparator<Trainer>() {
