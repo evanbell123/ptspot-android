@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PTSpot</string>
+    <string name="trainer_profile_pic_description">Trainer Profile Picture</string>
+    <string name="findATrainerBtn">Find A Trainer</string>
+    <string name="login">login</string>
+    <string name="register">register</string>
+    <string name="account">Account</string>
 </resources>

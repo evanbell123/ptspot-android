@@ -16,8 +16,10 @@ public class User {
     private Integer totalReviews = null;
     private Boolean gender = null;
     private Integer role = null;
+    private int profilePicture = R.drawable.ic_person;
 
-    public User() {}
+    public User() {
+    }
 
     public User(User user) {
         id = user.getID();
@@ -28,6 +30,7 @@ public class User {
         totalReviews = user.getTotalReviews();
         gender = user.getGender();
         role = user.getRole();
+        profilePicture = user.getProfilePicture();
 
     }
 
@@ -73,7 +76,9 @@ public class User {
         return firstName;
     }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
     public String getBirthDate() {
         return birthDate;
@@ -81,6 +86,10 @@ public class User {
 
     public Boolean getGender() {
         return gender;
+    }
+
+    public int getProfilePicture() {
+        return profilePicture;
     }
 
 }

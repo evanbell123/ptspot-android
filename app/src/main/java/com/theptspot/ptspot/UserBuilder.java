@@ -13,7 +13,7 @@ public class UserBuilder {
     private String birthDate = null;
     private Integer totalReviews = null;
     private Integer role = null;
-
+    private int profilePicture = R.drawable.ic_person;
 
     public UserBuilder() {}
 
@@ -58,6 +58,11 @@ public class UserBuilder {
 
     public UserBuilder role(Integer _role) {
         this.role = _role;
+        return this;
+    }
+
+    public UserBuilder profilePicture(Integer _profilePicture) {
+        this.role = _profilePicture;
         return this;
     }
 }

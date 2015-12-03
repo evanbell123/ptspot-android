@@ -2,6 +2,7 @@ package com.theptspot.ptspot;
 
 import android.util.Base64;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,7 +75,8 @@ public class APIService {
         return new JSONObject(response);
     }
 
-    public static JSONObject performPostCall(String requestURL) throws JSONException {
+    //used to fetch a trainer json
+    public static JSONArray performGetRequest(String requestURL) throws JSONException {
         URL url;
         String response = "";
         try {
@@ -83,9 +85,7 @@ public class APIService {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+            conn.setRequestMethod("GET");
             conn.setUseCaches(true);
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -109,7 +109,7 @@ public class APIService {
             e.printStackTrace();
         }
 
-        return new JSONObject(response);
+        return new JSONArray(response);
     }
 
     public static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {

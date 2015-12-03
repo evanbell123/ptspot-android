@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private Button bRegister;
     private EditText etFirstName, etLastName, etEmail, etPassword, etConfirmPassword, etBirthDate;
@@ -42,11 +42,7 @@ public class Register extends AppCompatActivity {
                 String birthDate = etFirstName.getText().toString();
                 Boolean gender;
                 Integer role;
-                if (rbMale.isChecked()) {
-                    gender = true;
-                } else {
-                    gender = false;
-                }
+                gender = rbMale.isChecked();
 
                 if (rbTrainer.isChecked()) {
                     role = 1;
@@ -56,7 +52,7 @@ public class Register extends AppCompatActivity {
 
                 //User user = new User(firstName, lastName, email, password, birthDate, gender, role);
 
-                startActivity(new Intent(v.getContext(), Login.class));
+                startActivity(new Intent(v.getContext(), LoginActivity.class));
             }
         });
     }

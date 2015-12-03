@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = Login.class.getName();
+    private static final String TAG = LoginActivity.class.getName();
     private static final String SERVER_ADDRESS = "http://www.theptspot.com/api/";
 
     private Button bLogin;
     private EditText etEmail, etPassword;
     private TextView tvRegisterLink;
-    UserLocalStore userLocalStore;
 
     private class FetchLoginTask extends AsyncTask<String, Void, String> {
 
@@ -74,23 +73,16 @@ public class Login extends AppCompatActivity {
         tvRegisterLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), Register.class));
+                startActivity(new Intent(v.getContext(), RegisterActivity.class));
             }
         });
     }
 
     private void showErrorMessage() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Login.this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
         dialogBuilder.setMessage("Incorrect user details");
         dialogBuilder.setPositiveButton("Ok", null);
         dialogBuilder.show();
-    }
-
-    private void logUserIn(User returnedUser) {
-        userLocalStore.storeUserData(returnedUser);
-        userLocalStore.setUserLoggedIn(true);
-
-        startActivity(new Intent(this, MainActivity.class));
     }
 
 }

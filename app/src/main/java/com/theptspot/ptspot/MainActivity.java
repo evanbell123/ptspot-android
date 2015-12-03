@@ -1,52 +1,40 @@
 package com.theptspot.ptspot;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-
-import junit.framework.Assert;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button bLogout;
-    private EditText etFirstName, etLastName, etEmail, etBirthDate;
-    UserLocalStore userLocalStore;
+    private Button bAccount, bFindATrainer;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        etFirstName = (EditText) findViewById(R.id.etFirstName);
-        etLastName = (EditText) findViewById(R.id.etLastName);
-        etEmail = (EditText) findViewById(R.id.etEmail);
-        etBirthDate = (EditText) findViewById(R.id.etBirthDate);
-        userLocalStore = new UserLocalStore(this);
+        bAccount = (Button) findViewById(R.id.bAccount);
+        bFindATrainer = (Button) findViewById(R.id.bFindATrainer);
 
-        bLogout = (Button) findViewById(R.id.bLogout);
-        bLogout.setOnClickListener(new View.OnClickListener() {
+        bAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userLocalStore.clearUserData();
-                userLocalStore.setUserLoggedIn(false);
-                startActivity(new Intent(v.getContext(), Login.class));
+                startActivity(new Intent(v.getContext(), LoginActivity.class));
+            }
+        });
+
+        bFindATrainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), TrainerResultsActivity.class));
             }
         });
     }
 
-    protected void onStart() {
-        super.onStart();
-    }
 
-    private void displayUserDetails() {
-        User user = userLocalStore.getLoggedInUser();
-        etFirstName.setText(user.getEmail());
-        etLastName.setText(user.getEmail());
-        etEmail.setText(user.getEmail());
-        etBirthDate.setText(user.getEmail());
-    }
 }

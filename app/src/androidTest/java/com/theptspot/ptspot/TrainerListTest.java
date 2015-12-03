@@ -22,6 +22,14 @@ public class TrainerListTest extends TestCase {
 
 
     public void setUp() throws JSONException {
+
+        trainerList = new TrainerList();
+
+        assertTrue("Trainer List Set Up Failed", !trainerList.getTrainerResults().isEmpty());
+
+
+
+        /*
         trainerArray = new JSONArray();
         Random random = new Random();
         //Generate random list of trainers
@@ -40,6 +48,7 @@ public class TrainerListTest extends TestCase {
             trainerArray.put(trainer);
         }
         trainerList = new TrainerList(trainerArray);
+        */
     }
 
     public void tearDown() {
@@ -51,7 +60,6 @@ public class TrainerListTest extends TestCase {
     throws exception if api call fails
      */
     public void testUpdateTrainerResults() throws Exception {
-
 
     }
 
@@ -67,7 +75,7 @@ public class TrainerListTest extends TestCase {
 
         for (int i = 0; i < trainerResults.size() - 1; i++) {
             Double PTScore1 = trainerResults.get(i).getPTScore();
-            Double PTScore2 = trainerResults.get(i+1).getPTScore();
+            Double PTScore2 = trainerResults.get(i + 1).getPTScore();
             if (PTScore1 < PTScore2) {
                 isSorted = false;
             }
