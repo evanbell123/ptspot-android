@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
-
-import junit.framework.Assert;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,8 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Evan on 12/2/2015.
@@ -63,7 +60,7 @@ public class TrainerResultsActivity extends ListActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.trainer_results);
+        setContentView(R.layout.activity_trainer_results);
 
         try {
             trainerList = new TrainerList(new JSONArray());
@@ -103,6 +100,11 @@ class TrainerArrayAdapter extends ArrayAdapter {
 
         ImageView imageView = (ImageView) rowView.findViewById(R.id.ivProfilePic);
         imageView.setImageResource(values.get(position).getProfilePicture());
+
+        RatingBar ratingBar = (RatingBar) rowView.findViewById(R.id.ratingBarOverallRating);
+
+        ratingBar.setStepSize(0.01f);
+        ratingBar.setRating(Float.parseFloat(values.get(position).getRating().toString()));
 
         return rowView;
     }

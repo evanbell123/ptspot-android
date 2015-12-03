@@ -1,7 +1,5 @@
 package com.theptspot.ptspot;
 
-import android.util.Log;
-
 import junit.framework.TestCase;
 
 import org.json.JSONArray;
@@ -18,19 +16,12 @@ public class TrainerListTest extends TestCase {
 
     private static final String TAG = TrainerListTest.class.getName();
     private TrainerList trainerList;
-    private JSONArray trainerArray; //testing dataset
+    private JSONArray trainerJSON; //testing dataset
 
 
     public void setUp() throws JSONException {
 
-        trainerList = new TrainerList();
-
-        assertTrue("Trainer List Set Up Failed", !trainerList.getTrainerResults().isEmpty());
-
-
-
-        /*
-        trainerArray = new JSONArray();
+        trainerJSON = new JSONArray();
         Random random = new Random();
         //Generate random list of trainers
         for (Integer i = 1; i <= 26; i++) {
@@ -45,10 +36,11 @@ public class TrainerListTest extends TestCase {
             trainer.put("effectiveness", random.nextInt(5));
             trainer.put("motivation", random.nextInt(5));
             trainer.put("intensity", random.nextInt(5));
-            trainerArray.put(trainer);
+            trainerJSON.put(trainer);
         }
-        trainerList = new TrainerList(trainerArray);
-        */
+        trainerList = new TrainerList(trainerJSON);
+
+        assertTrue("Trainer List Set Up Failed", !trainerList.getTrainerResults().isEmpty());
     }
 
     public void tearDown() {
