@@ -19,8 +19,8 @@ public class LoginService {
     private static final String TAG = LoginService.class.getName();
 
     private HashMap<String, String> loginCredentials;
-    String clientID, clientSecret;
-    APIService apiService;
+    private String clientID, clientSecret;
+    private APIService apiService;
 
     public LoginService(String email, String password, String clientID, String clientSecret) throws IOException {
 
@@ -42,9 +42,11 @@ public class LoginService {
         apiService.setRequestHeader(headerParams);
         apiService.setAuthorizationHeader(clientID, clientSecret);
         apiService.setRequestBody(loginCredentials);
+        apiService.performAPIRequest();
 
         //retrieve access token and return it
         //return apiService.performAPIRequest();
+
 
         HttpCookie cookie = new HttpCookie("accessToken", apiService.performAPIRequest());
 

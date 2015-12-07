@@ -58,6 +58,7 @@ public class APIService {
 
         writer.flush();
         writer.close();
+        outStream.flush();
         outStream.close();
     }
 
