@@ -4,18 +4,20 @@ import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -28,94 +30,77 @@ public class APIService {
     private static final String TAG = APIService.class.getName();
 
 
-    public static JSONObject performPostCallWithDataParams(String requestURL, HashMap<String, String> postDataParams) throws JSONException {
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
+    private HttpURLConnection conn;
+    //private OutputStream outStream;
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("POST");
+    public APIService(String requestPath, String requestMethod) throws IOException {
 
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+        initializeConnection(requestPath, requestMethod);
 
-            conn.addRequestProperty("Authorization", getB64Auth("TestClient", "TestSecret"));
-            conn.setUseCaches (true);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
-            os.close();
-            int responseCode=conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
-            }
-            else {
-                response="";
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new JSONObject(response);
+        //outStream = conn.getOutputStream();
     }
 
-    //used to fetch a trainer json
-    public static JSONArray performGetRequest(String requestURL) throws JSONException {
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
+    public void setRequestHeader(HashMap<String, String> headerParams) {
+        Iterator it = headerParams.entrySet().iterator();
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setUseCaches(true);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-
-            OutputStream os = conn.getOutputStream();
-
-            int responseCode=conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
-            }
-            else {
-                response="";
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        while (it.hasNext()) {
+            Map.Entry headerRequest = (Map.Entry) it.next();
+            conn.setRequestProperty(headerRequest.getKey().toString(), headerRequest.getValue().toString());
         }
-
-        return new JSONArray(response);
     }
 
-    public static String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
+    public void setRequestBody(HashMap<String, String> bodyParams) throws IOException {
+        OutputStream outStream = conn.getOutputStream();
+
+        BufferedWriter writer = new BufferedWriter(
+                new OutputStreamWriter(outStream, "UTF-8"));
+        writer.write(constructRequestBody(bodyParams));
+
+        writer.flush();
+        writer.close();
+        outStream.close();
+    }
+
+    public void setAuthorizationHeader(String clientID, String clientSecret) {
+        conn.addRequestProperty("Authorization", getB64Auth("TestClient", "TestSecret"));
+    }
+
+    public String performAPIRequest() throws IOException, JSONException {
+        //outStream.close();
+        String response = "";
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpsURLConnection.HTTP_OK) {
+            String line;
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = br.readLine()) != null) {
+                response += line;
+            }
+        } else {
+            response = "";
+
+        }
+
+        return response;
+    }
+
+    private void initializeConnection(String requestPath, String requestMethod) throws IOException {
+        URL url;
+        url = new URL("http://www.theptspot.com/" + requestPath);
+
+        conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout(15000);
+        conn.setConnectTimeout(15000);
+        conn.setRequestMethod(requestMethod);
+        conn.setUseCaches(true);
+        conn.setDoOutput(true);
+        conn.setDoInput(true);
+    }
+
+    private static String constructRequestBody(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             if (first)
                 first = false;
             else
@@ -129,9 +114,9 @@ public class APIService {
         return result.toString();
     }
 
-    private static String getB64Auth (String login, String pass) {
-        String source=login+":"+pass;
-        String ret="Basic "+Base64.encodeToString(source.getBytes(),Base64.URL_SAFE|Base64.NO_WRAP);
+    private static String getB64Auth(String login, String pass) {
+        String source = login + ":" + pass;
+        String ret = "Basic " + Base64.encodeToString(source.getBytes(), Base64.URL_SAFE | Base64.NO_WRAP);
         return ret;
     }
 

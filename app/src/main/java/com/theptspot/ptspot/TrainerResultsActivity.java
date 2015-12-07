@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,18 +27,21 @@ public class TrainerResultsActivity extends ListActivity{
 
     TrainerList trainerList;
 
-    private class FetchTrainersTask extends AsyncTask<Void, Void, JSONArray> {
+    private class FetchTrainersTask extends AsyncTask<String, Void, JSONArray> {
 
         @Override
-        protected JSONArray doInBackground(Void... params) {
-            GetRequestService getRequestService = new GetRequestService();
+        protected JSONArray doInBackground(String... params) {
+            GetRequestService getRequestService = null;
             try {
-                JSONArray trainerJSON = getRequestService.getTrainerResults();
-                return trainerJSON;
+                getRequestService = new GetRequestService(params[0]);
+                return getRequestService.performAPIRequest();
+            } catch (IOException e) {
+                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             return null;
+
         }
 
         @Override
@@ -68,7 +72,7 @@ public class TrainerResultsActivity extends ListActivity{
             e.printStackTrace();
         }
 
-        new FetchTrainersTask().execute();
+        new FetchTrainersTask().execute("search");
 
     }
 
@@ -140,7 +144,7 @@ class TrainerList{
         User user;
         UserBuilder userBuilder = new UserBuilder();
         //JSONObject trainerJSONObject = new JSONObject();
-        for (int i = 0; i < trainerJSONArray.length(); i++) {
+         for (int i = 0; i < trainerJSONArray.length(); i++) {
             JSONObject trainerJSONObject = trainerJSONArray.getJSONObject(i);
             user = userBuilder
                     .id(trainerJSONObject.getInt("id"))

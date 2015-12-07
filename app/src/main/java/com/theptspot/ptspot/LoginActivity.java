@@ -2,6 +2,7 @@ package com.theptspot.ptspot;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,28 +13,24 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = LoginActivity.class.getName();
-    private static final String SERVER_ADDRESS = "http://www.theptspot.com/api/";
+    private static final String LOCAL_STORAGE_FILENAME = "userStore";
+    //private static final String TAG = LoginActivity.class.getName();
+    //private static final String SERVER_ADDRESS = "http://www.theptspot.com/api/";
 
     private Button bLogin;
     private EditText etEmail, etPassword;
     private TextView tvRegisterLink;
 
-    private class FetchLoginTask extends AsyncTask<String, Void, String> {
+    private class FetchLoginTask extends AsyncTask<String, Void, Void> {
 
-        // Not sure what the three dots mean? See: http://stackoverflow.com/questions/3158730/java-3-dots-in-parameters?rq=1
-        protected String doInBackground(String... parms) {
-
-            // parms[0] is first parm, etc.
-            LoginService loginService = new LoginService(parms[0], parms[1]);
+        protected Void doInBackground(String... params) {
             try {
+                LoginService loginService = new LoginService(params[0], params[1], params[2], params[3]);
                 loginService.login();
-                //return user.toString();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return "Not available";
+            return null;
         }
 
         protected void onProgressUpdate(Void... values) {
@@ -41,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //  invoked on the UI thread after the background computation finishes
-        protected void onPostExecute(String id) {
+        protected void onPostExecute(String token) {
 
         }
     }
@@ -64,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                new FetchLoginTask().execute(email, password);
+                new FetchLoginTask().execute(email, password, "TestClient", "TestSecret");
 
                 //startActivity(new Intent(v.getContext(), MainActivity.class));
             }

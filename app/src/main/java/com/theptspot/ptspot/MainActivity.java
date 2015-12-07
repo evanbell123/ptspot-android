@@ -6,12 +6,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookieStore;
+import java.net.HttpCookie;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.AccessController;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button bAccount, bFindATrainer;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

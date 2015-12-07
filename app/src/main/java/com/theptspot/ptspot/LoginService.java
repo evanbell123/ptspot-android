@@ -1,11 +1,14 @@
 package com.theptspot.ptspot;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.HashMap;
 
@@ -13,31 +16,39 @@ import java.util.HashMap;
  * Created by ebbmf on 10/20/2015.
  */
 public class LoginService {
-    private String url;
-    private HashMap<String, String> loginCredentials;
     private static final String TAG = LoginService.class.getName();
 
-    public LoginService(String email, String password) {
-        url = "http://www.theptspot.com/account/login";
+    private HashMap<String, String> loginCredentials;
+    String clientID, clientSecret;
+    APIService apiService;
+
+    public LoginService(String email, String password, String clientID, String clientSecret) throws IOException {
+
+        this.clientID = clientID;
+        this.clientSecret = clientSecret;
+
         loginCredentials = new HashMap<>();
         loginCredentials.put("grant_type","password");
         loginCredentials.put("username", email);
         loginCredentials.put("password", password);
+
+        apiService = new APIService("account/login", "POST");
     }
 
-    // Throws Exception if there is a problem getting id
-    public void login() throws Exception {
-        try {
-            JSONObject userData = APIService.performPostCallWithDataParams(url, loginCredentials);
-            HttpCookie httpCookie = new HttpCookie("ptspot", userData.toString());
-            Log.i(TAG, httpCookie.toString());
-            //Log.i(TAG, userData.toString());
-            Log.i(TAG, httpCookie.getDomain());
+    public void login() throws IOException, JSONException {
+        HashMap<String, String> headerParams  = new HashMap<>();
+        headerParams.put("Content-Type", "application/x-www-form-urlencoded");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new Exception("Problem in LoginService.login");
-        }
+        apiService.setRequestHeader(headerParams);
+        apiService.setAuthorizationHeader(clientID, clientSecret);
+        apiService.setRequestBody(loginCredentials);
+
+        //retrieve access token and return it
+        //return apiService.performAPIRequest();
+
+        HttpCookie cookie = new HttpCookie("accessToken", apiService.performAPIRequest());
+
+        Log.i(TAG, cookie.toString());
     }
 
 
