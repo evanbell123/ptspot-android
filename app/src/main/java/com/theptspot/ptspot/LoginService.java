@@ -9,7 +9,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookieStore;
 import java.net.HttpCookie;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 
 /**
@@ -35,22 +41,33 @@ public class LoginService {
         apiService = new APIService("account/login", "POST");
     }
 
-    public void login() throws IOException, JSONException {
+    public void login() throws IOException, JSONException, URISyntaxException {
         HashMap<String, String> headerParams  = new HashMap<>();
         headerParams.put("Content-Type", "application/x-www-form-urlencoded");
 
         apiService.setRequestHeader(headerParams);
         apiService.setAuthorizationHeader(clientID, clientSecret);
         apiService.setRequestBody(loginCredentials);
-        apiService.performAPIRequest();
+        String accessToken = apiService.performAPIRequest();
 
         //retrieve access token and return it
         //return apiService.performAPIRequest();
+        String stringURL = "http://www.theptspot.com/";
+        URL url = new URL(stringURL);
+        URLConnection urlConnection = url.openConnection();
+        urlConnection.getContent();
 
 
-        HttpCookie cookie = new HttpCookie("accessToken", apiService.performAPIRequest());
+
+        HttpCookie cookie = new HttpCookie("accessToken", accessToken);
+
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
+        CookieStore cookieStore = cookieManager.getCookieStore();
+        cookieStore.add(url.toURI(), cookie);
 
         Log.i(TAG, cookie.toString());
+        Log.i(TAG, cookieStore.getCookies().toString());
     }
 
 

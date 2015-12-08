@@ -1,8 +1,10 @@
 package com.theptspot.ptspot;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,7 +21,34 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = LoginService.class.getName();
     private Button bAccount, bFindATrainer;
+
+    private class FetchLoginTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            String stringURL = "http://www.theptspot.com/";
+            URL url = null;
+            try {
+                url = new URL(stringURL);
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.getContent();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
+            CookieStore cookieStore = cookieManager.getCookieStore();
+
+            Log.i(TAG, cookieStore.getCookies().toString());
+            return null;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(v.getContext(), TrainerResultsActivity.class));
             }
         });
+
+
     }
 
 
