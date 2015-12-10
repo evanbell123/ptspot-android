@@ -41,7 +41,6 @@ public class TrainerResultsActivity extends ListActivity{
                 e.printStackTrace();
             }
             return null;
-
         }
 
         @Override
@@ -52,7 +51,6 @@ public class TrainerResultsActivity extends ListActivity{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             updateResults();
         }
     }
@@ -73,14 +71,8 @@ public class TrainerResultsActivity extends ListActivity{
         }
 
         new FetchTrainersTask().execute("search");
-
     }
-
-
 }
-
-
-
 
 class TrainerArrayAdapter extends ArrayAdapter {
     private final Context context;

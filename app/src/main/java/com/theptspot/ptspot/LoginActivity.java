@@ -98,11 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-
                 new FetchLoginTask(LoginActivity.this).execute(email, password, "TestClient", "TestSecret");
 
-
-                //startActivity(new Intent(v.getContext(), MainActivity.class));
             }
         });
 

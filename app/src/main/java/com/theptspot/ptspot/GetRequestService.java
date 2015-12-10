@@ -9,13 +9,13 @@ import java.io.IOException;
  * Created by Evan on 12/2/2015.
  */
 public class GetRequestService {
-    private APIService apiService;
+    private APIRequestBuilder apiRequestBuilder;
 
     public GetRequestService(String requestPath) throws IOException {
-        apiService = new APIService("api/" + requestPath, "GET");
+        apiRequestBuilder = new APIRequestBuilder("api/" + requestPath, "GET");
     }
 
     public JSONArray performAPIRequest() throws JSONException, IOException {
-        return new JSONArray(apiService.performAPIRequest());
+        return new JSONArray(apiRequestBuilder.performAPIRequest());
     }
 }
