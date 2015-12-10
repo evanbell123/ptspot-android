@@ -1,33 +1,17 @@
 package com.theptspot.ptspot;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 /**
  * Created by Evan on 11/21/2015.
  */
 public class Trainer extends User {
-    private Double rating;
-    private Double PTScore;
-    private Integer clarity;
-    private Integer effectiveness;
-    private Integer motivation;
-    private Integer intensity;
+    private final Double rating;
+    private final Double PTScore;
+    private final Integer clarity;
+    private final Integer effectiveness;
+    private final Integer motivation;
+    private final Integer intensity;
 
     Trainer(User user, Double rating, Double PTScore, Integer clarity, Integer effectiveness, Integer motivation, Integer intensity) {
         super(user);
@@ -39,7 +23,7 @@ public class Trainer extends User {
         this.intensity = intensity;
     }
 
-    public static Comparator<Trainer> ptScoreCompare = new Comparator<Trainer>() {
+    public static final Comparator<Trainer> ptScoreCompare = new Comparator<Trainer>() {
         @Override
         public int compare(Trainer lhs, Trainer rhs) {
             if (lhs.getPTScore() < rhs.getPTScore()) {

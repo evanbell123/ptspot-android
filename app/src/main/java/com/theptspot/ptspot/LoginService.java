@@ -4,24 +4,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
 /**
  * Created by ebbmf on 10/20/2015.
  */
-public class LoginService {
+class LoginService {
     private static final String TAG = LoginService.class.getName();
 
-    private HashMap<String, String> loginCredentials;
-    private String clientID, clientSecret;
+    private final HashMap<String, String> loginCredentials;
+    private final String clientID;
+    private final String clientSecret;
     private APIRequestBuilder apiRequestBuilder;
 
     public LoginService(String email, String password, String clientID, String clientSecret) throws IOException {
 
         this.clientID = clientID;
         this.clientSecret = clientSecret;
-
         loginCredentials = new HashMap<>();
         loginCredentials.put("grant_type", "password");
         loginCredentials.put("username", email);
@@ -30,7 +29,7 @@ public class LoginService {
         apiRequestBuilder = new APIRequestBuilder("account/login", "POST");
     }
 
-    public JSONObject login() throws IOException, JSONException, URISyntaxException {
+    public JSONObject login() throws IOException, JSONException {
         HashMap<String, String> headerParams = new HashMap<>();
         headerParams.put("Content-Type", "application/x-www-form-urlencoded");
 
@@ -42,9 +41,8 @@ public class LoginService {
                 .setAuthorizationHeader(clientID, clientSecret)
                 .setRequestBody(loginCredentials)
                 .performAPIRequest();
-        JSONObject accessToken = new JSONObject(stringToken);
 
-        return accessToken;
+        return new JSONObject(stringToken);
 
     }
 }

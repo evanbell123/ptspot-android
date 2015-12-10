@@ -2,8 +2,6 @@ package com.theptspot.ptspot;
 
 import android.util.Base64;
 
-import org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -61,7 +59,7 @@ public class APIRequestBuilder {
         return this;
     }
 
-    public String performAPIRequest() throws IOException, JSONException {
+    public String performAPIRequest() throws IOException {
         String response = "";
 
         int responseCode = conn.getResponseCode();
@@ -110,8 +108,7 @@ public class APIRequestBuilder {
 
     private static String getB64Auth(String login, String pass) {
         String source = login + ":" + pass;
-        String ret = "Basic " + Base64.encodeToString(source.getBytes(), Base64.URL_SAFE | Base64.NO_WRAP);
-        return ret;
+        return "Basic " + Base64.encodeToString(source.getBytes(), Base64.URL_SAFE | Base64.NO_WRAP);
     }
 
 }

@@ -13,10 +13,7 @@ public class PTCookiePolicy implements CookiePolicy {
 
     @Override
     public boolean shouldAccept(URI uri, HttpCookie cookie) {
-        if (uri.getHost() == domain && uri.getPath() == path) {
-            return true;
-        }
-        return false;
+        return uri.getHost() == domain && uri.getPath() == path;
     }
 
 

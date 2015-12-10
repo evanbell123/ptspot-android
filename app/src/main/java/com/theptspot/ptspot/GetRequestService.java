@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Created by Evan on 12/2/2015.
  */
-public class GetRequestService {
+class GetRequestService {
     private APIRequestBuilder apiRequestBuilder;
 
     public GetRequestService(String requestPath) throws IOException {

@@ -107,35 +107,22 @@ class TrainerArrayAdapter extends ArrayAdapter {
 }
 
 class TrainerList{
-    //private String url;
-    private String order;
-    //JSONArray trainerResults;
-    ArrayList<Trainer> trainerResults;
-    private static final String TAG = LoginService.class.getName();
 
-
+    private final ArrayList<Trainer> trainerResults;
 
     TrainerList(JSONArray trainerJSON) throws JSONException {
-        //url = "http://www.theptspot.com/api/search";
-        order = "PTScore";
         trainerResults = new ArrayList<Trainer>();
-
         updateTrainerResults(trainerJSON);
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
     }
 
     public ArrayList<Trainer> getTrainerResults() {
         return this.trainerResults;
     }
 
-    public void setTrainerResults(JSONArray trainerJSONArray) throws JSONException {
+    private void setTrainerResults(JSONArray trainerJSONArray) throws JSONException {
         Trainer trainer;
         User user;
         UserBuilder userBuilder = new UserBuilder();
-        //JSONObject trainerJSONObject = new JSONObject();
          for (int i = 0; i < trainerJSONArray.length(); i++) {
             JSONObject trainerJSONObject = trainerJSONArray.getJSONObject(i);
             user = userBuilder
@@ -164,7 +151,6 @@ class TrainerList{
         if (!trainerResults.isEmpty()) {
             trainerResults.clear();
         }
-
         setTrainerResults(trainerJSON);
     }
 

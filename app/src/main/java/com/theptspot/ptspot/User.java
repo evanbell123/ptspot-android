@@ -1,8 +1,5 @@
 package com.theptspot.ptspot;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by ebbmf on 10/12/2015.
  */
@@ -34,16 +31,18 @@ public class User {
 
     }
 
-    public User(String firstName, String lastName, String email, String birthDate, Boolean gender, Integer role) {
-        this.id = -1;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.totalReviews = -1;
-        this.role = role;
-    }
+// --Commented out by Inspection START (12/10/2015 10:57 AM):
+//    public User(String firstName, String lastName, String email, String birthDate, Boolean gender, Integer role) {
+//        this.id = -1;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.gender = gender;
+//        this.birthDate = birthDate;
+//        this.totalReviews = -1;
+//        this.role = role;
+//    }
+// --Commented out by Inspection STOP (12/10/2015 10:57 AM)
 
     public User(Integer id, String firstName, String lastName, String email, String birthDate, Boolean gender, Integer totalReviews, Integer role) {
         this.id = id;

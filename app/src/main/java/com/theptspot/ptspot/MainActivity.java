@@ -7,13 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.squareup.okhttp.OkHttpClient;
-
-import java.net.CookieStore;
 import java.net.HttpCookie;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity {
 
