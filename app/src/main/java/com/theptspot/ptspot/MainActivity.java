@@ -49,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
         PersistentCookieStore persistentCookieStore = new PersistentCookieStore(this);
         List<HttpCookie> cookies = persistentCookieStore.getCookies();
 
-        if (isLoggedIn(cookies)) {
-            showAlert(cookies.toString());
-        } else {
-            showAlert("You are not logged in");
-        }
+        showAlert(cookies.toString());
     }
 
     private void showAlert(String message) {
@@ -64,23 +60,4 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", null);
         builder.show();
     }
-
-    /*
-    if a cookie is found with the name "accessToken"
-    then the user is logged in.
-     */
-    private boolean isLoggedIn(List<HttpCookie> cookies) {
-        //PersistentCookieStore persistentCookieStore = new PersistentCookieStore(this);
-
-        for (HttpCookie cookie : cookies) {
-            System.out.println(cookie.getName());
-            if (cookie.getName() == "accessToken") {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
 }

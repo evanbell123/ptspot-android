@@ -2,6 +2,7 @@ package com.theptspot.ptspot;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,12 +30,20 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private TextView tvRegisterLink;
 
+
     private class FetchLoginTask extends AsyncTask<String, Void, JSONObject> {
+        private ProgressDialog loginWait;
+
+        public FetchLoginTask(Context context) {
+            loginWait = new ProgressDialog(context);
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loginWaiting();
+            loginWait.setTitle("Loggin in");
+            loginWait.setMessage("Please wait...");
+            loginWait.show();
         }
 
         protected JSONObject doInBackground(String... params) {
@@ -51,6 +60,11 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject response) {
             super.onPostExecute(response);
 
+
+            if (loginWait.isShowing()) {
+                loginWait.dismiss();
+            }
+
             if (response.has("error")) {
                 try {
                     loginFailEvent(response.getString("error_description"));
@@ -62,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 loginFailEvent("unknown error");
             }
+
         }
     }
 
@@ -83,7 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                new FetchLoginTask().execute(email, password, "TestClient", "TestSecret");
+
+                new FetchLoginTask(LoginActivity.this).execute(email, password, "TestClient", "TestSecret");
+
 
                 //startActivity(new Intent(v.getContext(), MainActivity.class));
             }
@@ -113,15 +130,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-
         Log.i(TAG, persistentCookieStore.getCookies().toString());
 
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    private void loginWaiting() {
-        ProgressDialog.show(this, "Logging in", "Please wait...");
-    }
-
 }
+

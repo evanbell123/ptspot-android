@@ -34,10 +34,7 @@ public class APIService {
     //private OutputStream outStream;
 
     public APIService(String requestPath, String requestMethod) throws IOException {
-
         initializeConnection(requestPath, requestMethod);
-
-        //outStream = conn.getOutputStream();
     }
 
     public void setRequestHeader(HashMap<String, String> headerParams) {
@@ -67,7 +64,6 @@ public class APIService {
     }
 
     public String performAPIRequest() throws IOException, JSONException {
-        //outStream.close();
         String response = "";
 
         int responseCode = conn.getResponseCode();
