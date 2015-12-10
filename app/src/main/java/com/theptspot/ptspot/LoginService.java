@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import com.squareup.okhttp.OkHttpClient;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,8 +13,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.CookieStore;
 import java.net.HttpCookie;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -34,42 +39,24 @@ public class LoginService {
         this.clientSecret = clientSecret;
 
         loginCredentials = new HashMap<>();
-        loginCredentials.put("grant_type","password");
+        loginCredentials.put("grant_type", "password");
         loginCredentials.put("username", email);
         loginCredentials.put("password", password);
 
         apiService = new APIService("account/login", "POST");
     }
 
-    public void login() throws IOException, JSONException, URISyntaxException {
-        HashMap<String, String> headerParams  = new HashMap<>();
+    public JSONObject login() throws IOException, JSONException, URISyntaxException {
+        HashMap<String, String> headerParams = new HashMap<>();
         headerParams.put("Content-Type", "application/x-www-form-urlencoded");
 
         apiService.setRequestHeader(headerParams);
         apiService.setAuthorizationHeader(clientID, clientSecret);
         apiService.setRequestBody(loginCredentials);
-        String accessToken = apiService.performAPIRequest();
+        String stringToken = apiService.performAPIRequest();
+        JSONObject accessToken = new JSONObject(stringToken);
 
-        //retrieve access token and return it
-        //return apiService.performAPIRequest();
-        String stringURL = "http://www.theptspot.com/";
-        URL url = new URL(stringURL);
-        URLConnection urlConnection = url.openConnection();
-        urlConnection.getContent();
+        return accessToken;
 
-
-
-        HttpCookie cookie = new HttpCookie("accessToken", accessToken);
-
-        CookieManager cookieManager = new CookieManager();
-        CookieHandler.setDefault(cookieManager);
-        CookieStore cookieStore = cookieManager.getCookieStore();
-        cookieStore.add(url.toURI(), cookie);
-
-        Log.i(TAG, cookie.toString());
-        Log.i(TAG, cookieStore.getCookies().toString());
     }
-
-
-
 }

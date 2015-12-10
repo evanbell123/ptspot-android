@@ -1,51 +1,73 @@
 package com.theptspot.ptspot;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.CookieManager;
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.regex.Pattern;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String LOCAL_STORAGE_FILENAME = "userStore";
-    //private static final String TAG = LoginActivity.class.getName();
-    //private static final String SERVER_ADDRESS = "http://www.theptspot.com/api/";
+    private static final String TAG = LoginActivity.class.getName();
 
     private Button bLogin;
     private EditText etEmail, etPassword;
     private TextView tvRegisterLink;
 
-    private class FetchLoginTask extends AsyncTask<String, Void, Void> {
+    private class FetchLoginTask extends AsyncTask<String, Void, JSONObject> {
 
-        protected Void doInBackground(String... params) {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loginWaiting();
+        }
+
+        protected JSONObject doInBackground(String... params) {
             try {
                 LoginService loginService = new LoginService(params[0], params[1], params[2], params[3]);
-                loginService.login();
+                return loginService.login();
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
         }
 
-        protected void onProgressUpdate(Void... values) {
+        @Override
+        protected void onPostExecute(JSONObject response) {
+            super.onPostExecute(response);
 
-        }
-
-        //  invoked on the UI thread after the background computation finishes
-        protected void onPostExecute(String token) {
-
+            if (response.has("error")) {
+                try {
+                    loginFailEvent(response.getString("error_description"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if (response.has("access_token")) {
+                loginSuccessEvent(response.toString());
+            } else {
+                loginFailEvent("unknown error");
+            }
         }
     }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -75,11 +97,31 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void showErrorMessage() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-        dialogBuilder.setMessage("Incorrect user details");
+    private void loginFailEvent(String errorMessage) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setMessage(errorMessage);
         dialogBuilder.setPositiveButton("Ok", null);
         dialogBuilder.show();
+    }
+
+    private void loginSuccessEvent(String accessToken) {
+
+        PersistentCookieStore persistentCookieStore = new PersistentCookieStore(this);
+        try {
+            persistentCookieStore.add(new URI("http://www.theptspot.com" + "/"), new HttpCookie("accessToken", accessToken));
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+
+        Log.i(TAG, persistentCookieStore.getCookies().toString());
+
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    private void loginWaiting() {
+        ProgressDialog.show(this, "Logging in", "Please wait...");
     }
 
 }
